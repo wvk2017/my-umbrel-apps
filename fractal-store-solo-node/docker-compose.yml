@@ -19,6 +19,7 @@ services:
     working_dir: /app
     command: node server.js
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${APP_DATA_DIR}/dashboard:/app:ro
     environment:
       FRACTAL_RPC_HOST: fractal-store-solo-node_node_1
@@ -35,14 +36,15 @@ services:
     restart: on-failure
     stop_grace_period: 5m
     volumes:
+      - ${APP_DATA_DIR}/.fractal-bitcoin:/root/.bitcoind
       - ${APP_DATA_DIR}/data:/data
-      - ${APP_DATA_DIR}/bin:/opt/fractal
+      - ${APP_DATA_DIR}/bin/bitcoind
     environment:
       VERSION: "0.2.9rc2"
     command: >
       bash -c "
         set -e
-        BINARY=/opt/fractal/bin/bitcoind
+        BINARY=/usr/bin/bitcoind
         if [ ! -f $$BINARY ]; then
           echo 'Downloading fractald v0.2.9rc2...'
           apt-get update -qq && apt-get install -y wget tar -qq
@@ -52,7 +54,7 @@ services:
           else
             FILE=fractald-0.2.9rc2-x86_64-linux-gnu.tar.gz
           fi
-          URL=https://github.com/fractal-bitcoin/fractald-release/releases/download/v0.2.9rc2/$$FILE
+          URL=https://github.com/fractal-bitcoin/fractald-release/releases/v0.2.9rc2/$$FILE
           wget -q -O /tmp/fractald.tar.gz $$URL
           tar -xzf /tmp/fractald.tar.gz -C /tmp
           mv /tmp/fractald-0.2.9rc2-*/  /opt/fractal/
