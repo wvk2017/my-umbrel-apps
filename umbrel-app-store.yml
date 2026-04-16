@@ -1,8 +1,8 @@
 manifestVersion: 1
-id: wvk2017
+id: fractal-store
 category: altcoin
-name: "AxeBCH2"
-version: "0.1.00-dev"
+name: "fractal-store"
+version: "0.1.10-dev"
 tagline: FB node + solo pool (Test)
 description: >-
   WARNING: (TESTING ONLY)
@@ -14,13 +14,13 @@ description: >-
   If you want a working known-good app, DO NOT USE DEV APPS.
 
   Miner connection:
-    - URL: `stratum+tcp://<your-5tratumos-host-ip>:3333
+    - URL: `stratum+tcp://<your-umbrel-host-ip>:
     - Username: worker name or `wallet.workername`
     - Password: anything
 
 developer: WillItMod
 website: https://github.com/wvk2017
-repo: https://github.com/wvk2018
+repo: https://github.com/wvk2017
 support: https://discord.gg/xxx
 dependencies: []
 port: 21223
@@ -35,4 +35,4 @@ backupIgnore:
   - data/node/blocks
   - data/node/chainstate
   - data/node/indexes
-submitter: WillItMod
+submitter: Wvk2017
