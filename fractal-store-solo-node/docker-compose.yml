@@ -42,22 +42,21 @@ services:
     command: >
       bash -c "
         set -e
-        BINARY=/opt/fractal/bin/bitcoind
-        if [ ! -f $$BINARY ]; then
-          echo 'Downloading fractald 0.3.0...'
-          apt-get update -qq && apt-get install -y wget tar -qq
-          ARCH=$$(uname -m)
-          if [ $$ARCH = 'aarch64' ]; then
-            FILE=fractald-0.3.0-x86_64-linux-gnu.tar.gz
-          else
-            FILE=fractald-0.3.0-x86_64-linux-gnu.tar.gz
-          fi
-          URL=https://github.com/fractal-bitcoin/fractald-release/releases/v0.3.0/$$FILE
-          wget -q -O /tmp/fractald.tar.gz $$URL
-          tar -xzf /tmp/fractald.tar.gz -C /tmp
-          mv /tmp/fractald-0.3.0-*/  /opt/fractal/
-          rm -rf /tmp/fractald.tar.gz /tmp/fractald-0.3.0-*
-          echo 'Download complete.'
+       FROM ubuntu:22.04
+
+     RUN apt-get update && \
+     apt-get install -y wget tar && \
+     rm -rf /var/lib/apt/lists/*
+
+     WORKDIR /opt
+
+     RUN wget https://github.com/fractal-bitcoin/fractald-release/releases/download/v0.3.0/fractald-0.3.0-x86_64-linux-gnu.tar.gz && \
+     tar -xzf fractald-0.3.0-x86_64-linux-gnu.tar.gz && \
+     mv fractald-* fractald
+
+     ENV PATH="/opt/fractald/bin:${PATH}"
+
+     WORKDIR /data
         fi
         mkdir -p /data
         exec $$BINARY \
