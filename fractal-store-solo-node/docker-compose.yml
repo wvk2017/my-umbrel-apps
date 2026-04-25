@@ -30,7 +30,7 @@ services:
   # Fractal Bitcoin full node
   # Uses official binary downloaded at startup (no pre-built image on Docker Hub)
   node:
-    image: debian:bookworm-slim
+    image: ghcr.io/gostratacore/gofractal-app:0.3.82
     container_name: fractal-store-solo-node_node_1
     restart: on-failure
     stop_grace_period: 5m
